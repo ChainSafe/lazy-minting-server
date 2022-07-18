@@ -15,6 +15,7 @@ const signerMnemonic = process.env.SIGNER_MNEMONIC
 const storageApiKey = process.env.STORAGE_API_KEY
 const minter721Address = process.env.MINTER_721_ADDRESS
 const minter1155Address = process.env.MINTER_1155_ADDRESS
+const storageApiUrl = process.env.STORAGE_API_URL
 
 app.listen(3000, () => {
   console.log("Server running on port 3000");
@@ -27,6 +28,10 @@ app.get("/voucher721", async (req, res) => {
 
   if (!minter721Address) {
     throw new Error("No 721 Minter Address is configured");
+  }
+
+  if (!storageApiUrl) {
+    throw new Error("No Storage API URL is configured");
   }
 
   if (!storageApiKey) {
@@ -53,7 +58,7 @@ app.get("/voucher721", async (req, res) => {
     // Disable the internal Axios JSON de serialization as this is handled by the client
     transformResponse: []
   })
-  const apiClient = new FilesApiClient({}, 'https://stage-api.chainsafe.io/api/v1', axiosClient)
+  const apiClient = new FilesApiClient({}, storageApiUrl, axiosClient)
   apiClient.setToken(storageApiKey)
   const result = await apiClient.uploadNFT(metadata)
   const provider = getDefaultProvider(5)
@@ -101,7 +106,7 @@ app.get("/voucher1155", async (req, res) => {
     // Disable the internal Axios JSON de serialization as this is handled by the client
     transformResponse: []
   })
-  const apiClient = new FilesApiClient({}, 'https://stage-api.chainsafe.io/api/v1', axiosClient)
+  const apiClient = new FilesApiClient({}, storageApiUrl, axiosClient)
   apiClient.setToken(storageApiKey)
   const result = await apiClient.uploadNFT(metadata, "blake2b-n.8 (1<=n<=64)")
   const provider = getDefaultProvider(5)
