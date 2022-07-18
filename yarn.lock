@@ -141,12 +141,13 @@
   dependencies:
     ethers "5.6.8"
 
-"@chainsafe/marketplace-contracts@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@chainsafe/marketplace-contracts/-/marketplace-contracts-1.0.1.tgz#8ac06faef5c012cfd2e5de2fd072ee3d40f5a2eb"
-  integrity sha512-xQFBu6ueC7o4esKkTtFZuj/8cAMHnMFKEQWuuaDDPMOM1K89h3hhPMSanMSNmWEiTW55FsJCjrZVB2J+SqQb/Q==
+"@chainsafe/marketplace-contracts@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@chainsafe/marketplace-contracts/-/marketplace-contracts-1.0.2.tgz#f619d70d936df1405a8dde49d1ec2c4688ba74b7"
+  integrity sha512-eX8245kPgkhh7wq3p1hnisvm80mQxHN2SjfxmqRVtADnThC5ajge4rlpxK4MEbgZS8YsHWV8zaJ5+j2/E0Xmuw==
   dependencies:
     "@openzeppelin/contracts" "^4.4.2"
+    "@openzeppelin/contracts-upgradeable" "^4.6.0"
     progress "^2.0.3"
 
 "@cspotcode/source-map-support@^0.8.0":
@@ -585,6 +586,11 @@
   dependencies:
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
+
+"@openzeppelin/contracts-upgradeable@^4.6.0":
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts-upgradeable/-/contracts-upgradeable-4.7.0.tgz#6437261286879d353f6de7bf3ac8216bef8a486d"
+  integrity sha512-wO3PyoAaAV/rA77cK8H4c3SbO98QylTjfiFxyvURUZKTFLV180rnAvna1x7/Nxvt0Gqv+jt1sXKC7ygxsq8iCw==
 
 "@openzeppelin/contracts@^4.4.2":
   version "4.7.0"

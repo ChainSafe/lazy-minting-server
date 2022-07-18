@@ -7,14 +7,14 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon src/index.ts --inspect=0.0.0.0",
-    "start": "node dist/index.js"
+    "start": "node build/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@chainsafe/files-api-client": "^1.18.38",
     "@chainsafe/lazy-minting-voucher-signer": "^1.0.0",
-    "@chainsafe/marketplace-contracts": "^1.0.1",
+    "@chainsafe/marketplace-contracts": "1.0.2",
     "axios": "^0.27.2",
     "dayjs": "^1.11.3",
     "dotenv": "^16.0.1",
