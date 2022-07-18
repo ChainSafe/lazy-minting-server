@@ -21,6 +21,10 @@ app.listen(3000, () => {
   console.log("Server running on port 3000");
 });
 
+app.get("/healthCheck", (req, res) => {
+  res.send("OK")
+})
+
 app.get("/voucher721", async (req, res) => {
   if (!signerMnemonic) {
     throw new Error("No signer key is configured")
