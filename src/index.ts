@@ -138,8 +138,6 @@ app.get("/voucher1155", async (req, res) => {
   try {
     //@ts-ignore
     const result = await apiClient.uploadNFT(metadata, "blake2b-208")
-    console.log(result.cid)
-    console.log(id(result.cid))
     const provider = getDefaultProvider(5)
     const wallet = (recoverWalletFromMnemonic(signerMnemonic)).connect(provider)
     const minterContract = GeneralERC1155__factory.connect(minter1155Address, wallet)
