@@ -16,9 +16,10 @@ const storageApiKey = process.env.STORAGE_API_KEY
 const minter721Address = process.env.MINTER_721_ADDRESS
 const minter1155Address = process.env.MINTER_1155_ADDRESS
 const storageApiUrl = process.env.STORAGE_API_URL
+const port = process.env.PORT || 3000
 
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
 
 app.get("/healthCheck", (req, res) => {
