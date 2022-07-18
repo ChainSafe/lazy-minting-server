@@ -8,6 +8,9 @@ import { FilesApiClient } from '@chainsafe/files-api-client'
 import dayjs from 'dayjs'
 import { File } from 'formdata-node'
 import { getDefaultProvider } from 'ethers'
+import fs from 'fs';
+import { Stream } from 'stream'
+import { id } from 'ethers/lib/utils'
 
 const app = express();
 
@@ -17,6 +20,15 @@ const minter721Address = process.env.MINTER_721_ADDRESS
 const minter1155Address = process.env.MINTER_1155_ADDRESS
 const storageApiUrl = process.env.STORAGE_API_URL
 const port = process.env.PORT || 3000
+
+async function stream2buffer(stream: Stream): Promise<Buffer> {
+  return new Promise<Buffer>((resolve, reject) => {
+    const _buf = Array<any>();
+    stream.on("data", chunk => _buf.push(chunk));
+    stream.on("end", () => resolve(Buffer.concat(_buf)));
+    stream.on("error", err => reject(`error converting stream - ${err}`));
+  });
+}
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
@@ -51,7 +63,10 @@ app.get("/voucher721", async (req, res) => {
   }
 
   //Create metadata for the NFT to be minted
-  const image = await axios.get('https://picsum.photos/800.jpg', { responseType: 'blob' }).then(response => new File([response.data], "image.jpg", { type: "image/jpg" }))
+  const imageStream = await axios.get('https://picsum.photos/800.jpg', { responseType: 'stream' }).then(res => res.data)
+  const imageBuffer = await stream2buffer(imageStream)
+  const image = new File([imageBuffer.buffer], "image.jpg", { type: "image/jpg" })
+
   const metadata = {
     name: `test lazy mint ERC721 nft`,
     description: `ipsum lorem`,
@@ -104,7 +119,10 @@ app.get("/voucher1155", async (req, res) => {
   }
 
   // Create metadata for the NFT to be minted
-  const image = await axios.get('https://picsum.photos/800.jpg', { responseType: 'blob' }).then(response => new Blob([response.data], { type: "image/jpg" }))
+  const imageStream = await axios.get('https://picsum.photos/800.jpg', { responseType: 'stream' }).then(res => res.data)
+  const imageBuffer = await stream2buffer(imageStream)
+  const image = new File([imageBuffer.buffer], "image.jpg", { type: "image/jpg" })
+
   const metadata = {
     name: `test lazy mint ERC1155 nft`,
     description: `ipsum lorem`,
@@ -118,15 +136,18 @@ app.get("/voucher1155", async (req, res) => {
   const apiClient = new FilesApiClient({}, storageApiUrl, axiosClient)
   apiClient.setToken(storageApiKey)
   try {
-    const result = await apiClient.uploadNFT(metadata, "blake2b-n.8 (1<=n<=64)")
+    //@ts-ignore
+    const result = await apiClient.uploadNFT(metadata, "blake2b-208")
+    console.log(result.cid)
+    console.log(id(result.cid))
     const provider = getDefaultProvider(5)
     const wallet = (recoverWalletFromMnemonic(signerMnemonic)).connect(provider)
     const minterContract = GeneralERC1155__factory.connect(minter1155Address, wallet)
     const minter = new LazyMinter({ contract: minterContract, signer: wallet })
 
-    const voucher = minter.createGamingVoucher1155({
+    const voucher = await minter.createGamingVoucher1155({
       minPrice: 0,
-      tokenId: result.cid,
+      tokenId: id(result.cid),
       amount: 1,
       nonce: dayjs().valueOf(),
       signer: wallet.address
