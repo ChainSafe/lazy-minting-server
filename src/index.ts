@@ -46,12 +46,11 @@ app.get("/voucher721", async (req, res) => {
   }
 
   //Create metadata for the NFT to be minted
-
   const image = await axios.get('https://picsum.photos/800.jpg', { responseType: 'blob' }).then(response => new File([response.data], "image.jpg", { type: "image/jpg" }))
   const metadata = {
-    name: `test lazy mint nft nft`,
-    description: `nft description ipsum lorem`,
-    image: image,
+    name: `test lazy mint ERC721 nft`,
+    description: `ipsum lorem`,
+    image,
   }
 
   const axiosClient = axios.create({
@@ -60,18 +59,23 @@ app.get("/voucher721", async (req, res) => {
   })
   const apiClient = new FilesApiClient({}, storageApiUrl, axiosClient)
   apiClient.setToken(storageApiKey)
-  const result = await apiClient.uploadNFT(metadata)
-  const provider = getDefaultProvider(5)
-  const wallet = (recoverWalletFromMnemonic(signerMnemonic)).connect(provider)
-  const minterContract = GeneralERC721__factory.connect(minter721Address, wallet)
-  const minter = new LazyMinter({ contract: minterContract, signer: wallet })
-  const voucher = await minter.createGamingVoucher721({
-    minPrice: 0,
-    uri: result.cid,
-    signer: wallet.address
-  })
+  try {
+    const result = await apiClient.uploadNFT(metadata)
+    const provider = getDefaultProvider(5)
+    const wallet = (recoverWalletFromMnemonic(signerMnemonic)).connect(provider)
+    const minterContract = GeneralERC721__factory.connect(minter721Address, wallet)
+    const minter = new LazyMinter({ contract: minterContract, signer: wallet })
+    const voucher = await minter.createGamingVoucher721({
+      minPrice: 0,
+      uri: result.cid,
+      signer: wallet.address
+    })
 
-  res.send(voucher)
+    res.send(voucher)
+  } catch (error: any) {
+    console.error(error?.message)
+    res.status(503).send("Internal Server Error")
+  }
 })
 
 app.get("/voucher1155", async (req, res) => {
@@ -97,8 +101,8 @@ app.get("/voucher1155", async (req, res) => {
   // Create metadata for the NFT to be minted
   const image = await axios.get('https://picsum.photos/800.jpg', { responseType: 'blob' }).then(response => new Blob([response.data], { type: "image/jpg" }))
   const metadata = {
-    name: `test lazy mint nft nft`,
-    description: `nft description ipsum lorem`,
+    name: `test lazy mint ERC1155 nft`,
+    description: `ipsum lorem`,
     image,
   }
 
@@ -108,19 +112,23 @@ app.get("/voucher1155", async (req, res) => {
   })
   const apiClient = new FilesApiClient({}, storageApiUrl, axiosClient)
   apiClient.setToken(storageApiKey)
-  const result = await apiClient.uploadNFT(metadata, "blake2b-n.8 (1<=n<=64)")
-  const provider = getDefaultProvider(5)
-  const wallet = (recoverWalletFromMnemonic(signerMnemonic)).connect(provider)
-  const minterContract = GeneralERC1155__factory.connect(minter1155Address, wallet)
-  const minter = new LazyMinter({ contract: minterContract, signer: wallet })
+  try {
+    const result = await apiClient.uploadNFT(metadata, "blake2b-n.8 (1<=n<=64)")
+    const provider = getDefaultProvider(5)
+    const wallet = (recoverWalletFromMnemonic(signerMnemonic)).connect(provider)
+    const minterContract = GeneralERC1155__factory.connect(minter1155Address, wallet)
+    const minter = new LazyMinter({ contract: minterContract, signer: wallet })
 
-  const voucher = minter.createGamingVoucher1155({
-    minPrice: 0,
-    tokenId: result.cid,
-    amount: 1,
-    nonce: dayjs().valueOf(),
-    signer: wallet.address
-  })
-
-  res.send(voucher)
+    const voucher = minter.createGamingVoucher1155({
+      minPrice: 0,
+      tokenId: result.cid,
+      amount: 1,
+      nonce: dayjs().valueOf(),
+      signer: wallet.address
+    })
+    res.send(voucher)
+  } catch (error) {
+    console.log(error)
+    res.status(503).send("Internal Server Error")
+  }
 })
