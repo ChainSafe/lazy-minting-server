@@ -118,10 +118,10 @@
     "@babel/helper-validator-identifier" "^7.18.6"
     to-fast-properties "^2.0.0"
 
-"@chainsafe/files-api-client@^1.18.38":
-  version "1.18.38"
-  resolved "https://registry.yarnpkg.com/@chainsafe/files-api-client/-/files-api-client-1.18.38.tgz#397d37b638a9862f7bf1e4e7d0f1047b53b83d7c"
-  integrity sha512-rNTY27w8ILmBROoJITLoom28dbfCGSB1ymesFE1kba8siY1zbiNWG3Vpi4gaRSNi0dNF7TFVsJUDtXPSU654Ow==
+"@chainsafe/files-api-client@1.18.40":
+  version "1.18.40"
+  resolved "https://registry.yarnpkg.com/@chainsafe/files-api-client/-/files-api-client-1.18.40.tgz#c8e5bdd7602aa8ba4525e558c6e9ae2bcf12daaf"
+  integrity sha512-ww4un/IDlm1VYIhr/bkKHJZ5X60rc26VS/tjpD6YSeaFw3ypIwwWxMwWHf5O6bNck/4FyuR/Y97GThj59CAUCA==
   dependencies:
     "@chainsafe/form-data-encoder" "^1.0.0"
     "@redocly/openapi-cli" "^1.0.0-beta.58"

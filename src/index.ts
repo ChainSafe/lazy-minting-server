@@ -1,6 +1,5 @@
 import 'dotenv/config'
 import express from 'express'
-import { Blob } from "buffer"
 import { LazyMinter, recoverWalletFromMnemonic } from '@chainsafe/lazy-minting-voucher-signer'
 import { GeneralERC1155__factory, GeneralERC721__factory } from '@chainsafe/marketplace-contracts'
 import axios from 'axios'
@@ -8,7 +7,6 @@ import { FilesApiClient } from '@chainsafe/files-api-client'
 import dayjs from 'dayjs'
 import { File } from 'formdata-node'
 import { getDefaultProvider } from 'ethers'
-import fs from 'fs';
 import { Stream } from 'stream'
 import { id } from 'ethers/lib/utils'
 
@@ -136,8 +134,7 @@ app.get("/voucher1155", async (req, res) => {
   const apiClient = new FilesApiClient({}, storageApiUrl, axiosClient)
   apiClient.setToken(storageApiKey)
   try {
-    //@ts-ignore
-    const result = await apiClient.uploadNFT(metadata, "blake2b-208")
+    const uploadResult = await apiClient.uploadNFT(metadata, "blake2b-208")
     const provider = getDefaultProvider(5)
     const wallet = (recoverWalletFromMnemonic(signerMnemonic)).connect(provider)
     const minterContract = GeneralERC1155__factory.connect(minter1155Address, wallet)
@@ -145,12 +142,12 @@ app.get("/voucher1155", async (req, res) => {
 
     const voucher = await minter.createGamingVoucher1155({
       minPrice: 0,
-      tokenId: id(result.cid),
+      tokenId: id(uploadResult.cid),
       amount: 1,
       nonce: dayjs().valueOf(),
       signer: wallet.address
     })
-    res.send(voucher)
+    res.send({ ...voucher, uri: uploadResult.cid })
   } catch (error) {
     console.log(error)
     res.status(503).send("Internal Server Error")
