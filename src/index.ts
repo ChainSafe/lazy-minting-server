@@ -7,8 +7,8 @@ import { FilesApiClient } from '@chainsafe/files-api-client'
 import dayjs from 'dayjs'
 import { File } from 'formdata-node'
 import { getDefaultProvider } from 'ethers'
-import { Stream } from 'stream'
-import { id } from 'ethers/lib/utils'
+import { stream2buffer } from './stream2buffer'
+import { cidToTokenId } from './cidHelpers'
 
 const app = express();
 
@@ -18,15 +18,6 @@ const minter721Address = process.env.MINTER_721_ADDRESS
 const minter1155Address = process.env.MINTER_1155_ADDRESS
 const storageApiUrl = process.env.STORAGE_API_URL
 const port = process.env.PORT || 3000
-
-async function stream2buffer(stream: Stream): Promise<Buffer> {
-  return new Promise<Buffer>((resolve, reject) => {
-    const _buf = Array<any>();
-    stream.on("data", chunk => _buf.push(chunk));
-    stream.on("end", () => resolve(Buffer.concat(_buf)));
-    stream.on("error", err => reject(`error converting stream - ${err}`));
-  });
-}
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
@@ -142,7 +133,7 @@ app.get("/voucher1155", async (req, res) => {
 
     const voucher = await minter.createGamingVoucher1155({
       minPrice: 0,
-      tokenId: id(uploadResult.cid),
+      tokenId: cidToTokenId(uploadResult.cid),
       amount: 1,
       nonce: dayjs().valueOf(),
       signer: wallet.address
