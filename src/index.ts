@@ -9,6 +9,7 @@ import { File } from 'formdata-node'
 import { getDefaultProvider } from 'ethers'
 import { stream2buffer } from './stream2buffer'
 import { cidToTokenId } from './cidHelpers'
+import cors from 'cors'
 
 const app = express();
 
@@ -19,13 +20,11 @@ const minter1155Address = process.env.MINTER_1155_ADDRESS
 const storageApiUrl = process.env.STORAGE_API_URL
 const port = process.env.PORT || 3000
 
+app.use(cors())
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
-
-app.get("/healthCheck", (req, res) => {
-  res.send("OK")
-})
 
 app.get("/voucher721", async (req, res) => {
   if (!signerMnemonic) {
