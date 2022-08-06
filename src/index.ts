@@ -68,7 +68,7 @@ app.get("/voucher721", async (req, res) => {
   const apiClient = new FilesApiClient({}, storageApiUrl, axiosClient)
   apiClient.setToken(storageApiKey)
   try {
-    const result = await apiClient.uploadNFT(metadata)
+    const result = await apiClient.uploadNFT(metadata, "blake2b-208")
     const provider = getDefaultProvider(5)
     const wallet = (recoverWalletFromMnemonic(signerMnemonic)).connect(provider)
     const minterContract = GeneralERC721__factory.connect(minter721Address, wallet)
