@@ -135,10 +135,10 @@
   resolved "https://registry.yarnpkg.com/@chainsafe/form-data-encoder/-/form-data-encoder-1.0.0.tgz#1e1df2c9c8153478f0021c71ef654f210c2ef280"
   integrity sha512-rQpAMNJJm10IRCe43ZDLgvOgjf5l6G96VCAlpdhtuBeUhVURA+ybOOlmD036Q1tDfmecuNdCvxuOMkl0FXwZfA==
 
-"@chainsafe/lazy-minting-voucher-signer@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@chainsafe/lazy-minting-voucher-signer/-/lazy-minting-voucher-signer-1.0.0.tgz#0d49699f75d406f4ee8ef42d51ebb2c1af8fe90d"
-  integrity sha512-0uciLcBQp8Pf2pASWqlVlRgy+taotMQwbnadPqkou/hUqRtoCjAidko/wGvvX3cuUbhPhuTG3/xjEbkc/BEadQ==
+"@chainsafe/lazy-minting-voucher-signer@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@chainsafe/lazy-minting-voucher-signer/-/lazy-minting-voucher-signer-1.0.2.tgz#4c5e513d60b297efa97d67ab51d3677b61efec8f"
+  integrity sha512-yEB8AXMci2kPiS8hykgPYqbPQZ9nktAAzviw134DS7tn5pQM5z3rCPdLLM9maPuKQJO54vOrQOLiAEJGkjxDJg==
   dependencies:
     ethers "5.6.8"
 
