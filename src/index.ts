@@ -73,10 +73,13 @@ app.get("/voucher721", async (req, res) => {
     const wallet = (recoverWalletFromMnemonic(signerMnemonic)).connect(provider)
     const minterContract = GeneralERC721__factory.connect(minter721Address, wallet)
     const minter = new LazyMinter({ contract: minterContract, signer: wallet })
+    const userWallet = // get call goes here?
+    
     const voucher = await minter.createGamingVoucher721({
       minPrice: 0,
       uri: result.cid,
-      signer: wallet.address
+      signer: wallet.address,
+      receiver: userWallet
     })
 
     res.send(voucher)
@@ -129,13 +132,15 @@ app.get("/voucher1155", async (req, res) => {
     const wallet = (recoverWalletFromMnemonic(signerMnemonic)).connect(provider)
     const minterContract = GeneralERC1155__factory.connect(minter1155Address, wallet)
     const minter = new LazyMinter({ contract: minterContract, signer: wallet })
+    const userWallet = // get call goes here?
 
     const voucher = await minter.createGamingVoucher1155({
       minPrice: 0,
       tokenId: cidToTokenId(uploadResult.cid),
       amount: 1,
       nonce: dayjs().valueOf(),
-      signer: wallet.address
+      signer: wallet.address,
+      receiver: userWallet
     })
     res.send({ ...voucher, uri: uploadResult.cid })
   } catch (error) {
