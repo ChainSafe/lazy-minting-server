@@ -27,53 +27,53 @@ app.listen(port, () => {
 });
 
 app.get("/voucher721", async (req, res) => {
-  if (!signerMnemonic) {
-    throw new Error("No signer key is configured")
-  }
-
-  if (!minter721Address) {
-    throw new Error("No 721 Minter Address is configured");
-  }
-
-  if (!storageApiUrl) {
-    throw new Error("No Storage API URL is configured");
-  }
-
-  if (!storageApiKey) {
-    throw new Error("No Storage API Key is configured");
-  }
-
-  // Query game state to determine whether the user making the request is authorized to mint
-  const voucherEarned = true
-
-  if (!voucherEarned) {
-    throw new Error("Voucher is not yet earned");
-  }
-
-  const receiver = req.query.receiver as string
-
-  if (!receiver) {
-    throw new Error("Voucher receiver not specified")
-  }
-
-  //Create metadata for the NFT to be minted
-  const imageStream = await axios.get('https://picsum.photos/800.jpg', { responseType: 'stream' }).then(res => res.data)
-  const imageBuffer = await stream2buffer(imageStream)
-  const image = new File([imageBuffer.buffer], "image.jpg", { type: "image/jpg" })
-
-  const metadata = {
-    name: `test lazy mint ERC721 nft`,
-    description: `ipsum lorem`,
-    image,
-  }
-
-  const axiosClient = axios.create({
-    // Disable the internal Axios JSON de serialization as this is handled by the client
-    transformResponse: []
-  })
-  const apiClient = new FilesApiClient({}, storageApiUrl, axiosClient)
-  apiClient.setToken(storageApiKey)
   try {
+    if (!signerMnemonic) {
+      throw new Error("No signer key is configured")
+    }
+
+    if (!minter721Address) {
+      throw new Error("No 721 Minter Address is configured");
+    }
+
+    if (!storageApiUrl) {
+      throw new Error("No Storage API URL is configured");
+    }
+
+    if (!storageApiKey) {
+      throw new Error("No Storage API Key is configured");
+    }
+
+    // Query game state to determine whether the user making the request is authorized to mint
+    const voucherEarned = true
+
+    if (!voucherEarned) {
+      throw new Error("Voucher is not yet earned");
+    }
+
+    const receiver = req.query.receiver as string
+
+    if (!receiver) {
+      throw new Error("Voucher receiver not specified")
+    }
+
+    //Create metadata for the NFT to be minted
+    const imageStream = await axios.get('https://picsum.photos/800.jpg', { responseType: 'stream' }).then(res => res.data)
+    const imageBuffer = await stream2buffer(imageStream)
+    const image = new File([imageBuffer.buffer], "image.jpg", { type: "image/jpg" })
+
+    const metadata = {
+      name: `test lazy mint ERC721 nft`,
+      description: `ipsum lorem`,
+      image,
+    }
+
+    const axiosClient = axios.create({
+      // Disable the internal Axios JSON de serialization as this is handled by the client
+      transformResponse: []
+    })
+    const apiClient = new FilesApiClient({}, storageApiUrl, axiosClient)
+    apiClient.setToken(storageApiKey)
     const uploadResult = await apiClient.uploadNFT(metadata, "blake2b-208")
     const provider = getDefaultProvider(5)
     const wallet = (recoverWalletFromMnemonic(signerMnemonic)).connect(provider)
@@ -95,49 +95,49 @@ app.get("/voucher721", async (req, res) => {
 })
 
 app.get("/voucher1155", async (req, res) => {
-  if (!signerMnemonic) {
-    throw new Error("No signer key is configured")
-  }
-
-  if (!minter1155Address) {
-    throw new Error("No 1155 Minter Address is configured");
-  }
-
-  if (!storageApiKey) {
-    throw new Error("No Storage API Key is configured");
-  }
-
-  // Query game state to determine whether the user making the request is authorized to mint
-  const voucherEarned = true
-
-  if (!voucherEarned) {
-    throw new Error("Voucher is not yet earned");
-  }
-
-  const receiver = req.query.receiver as string
-
-  if (!receiver) {
-    throw new Error("Voucher receiver not specified")
-  }
-
-  // Create metadata for the NFT to be minted
-  const imageStream = await axios.get('https://picsum.photos/800.jpg', { responseType: 'stream' }).then(res => res.data)
-  const imageBuffer = await stream2buffer(imageStream)
-  const image = new File([imageBuffer.buffer], "image.jpg", { type: "image/jpg" })
-
-  const metadata = {
-    name: `test lazy mint ERC1155 nft`,
-    description: `ipsum lorem`,
-    image,
-  }
-
-  const axiosClient = axios.create({
-    // Disable the internal Axios JSON de serialization as this is handled by the client
-    transformResponse: []
-  })
-  const apiClient = new FilesApiClient({}, storageApiUrl, axiosClient)
-  apiClient.setToken(storageApiKey)
   try {
+    if (!signerMnemonic) {
+      throw new Error("No signer key is configured")
+    }
+
+    if (!minter1155Address) {
+      throw new Error("No 1155 Minter Address is configured");
+    }
+
+    if (!storageApiKey) {
+      throw new Error("No Storage API Key is configured");
+    }
+
+    // Query game state to determine whether the user making the request is authorized to mint
+    const voucherEarned = true
+
+    if (!voucherEarned) {
+      throw new Error("Voucher is not yet earned");
+    }
+
+    const receiver = req.query.receiver as string
+
+    if (!receiver) {
+      throw new Error("Voucher receiver not specified")
+    }
+
+    // Create metadata for the NFT to be minted
+    const imageStream = await axios.get('https://picsum.photos/800.jpg', { responseType: 'stream' }).then(res => res.data)
+    const imageBuffer = await stream2buffer(imageStream)
+    const image = new File([imageBuffer.buffer], "image.jpg", { type: "image/jpg" })
+
+    const metadata = {
+      name: `test lazy mint ERC1155 nft`,
+      description: `ipsum lorem`,
+      image,
+    }
+
+    const axiosClient = axios.create({
+      // Disable the internal Axios JSON de serialization as this is handled by the client
+      transformResponse: []
+    })
+    const apiClient = new FilesApiClient({}, storageApiUrl, axiosClient)
+    apiClient.setToken(storageApiKey)
     const uploadResult = await apiClient.uploadNFT(metadata, "blake2b-208")
     const provider = getDefaultProvider(5)
     const wallet = (recoverWalletFromMnemonic(signerMnemonic)).connect(provider)
