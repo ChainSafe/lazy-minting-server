@@ -95,20 +95,18 @@ app.get("/voucher721", async (req, res) => {
 })
 
 app.get("/voucher1155", async (req, res) => {
-  console.log("In sign 1155")
   if (!signerMnemonic) {
     throw new Error("No signer key is configured")
   }
-  console.log("mnemonic is configured")
 
   if (!minter1155Address) {
     throw new Error("No 1155 Minter Address is configured");
   }
-  console.log("minter 1155 is configured")
+
   if (!storageApiKey) {
     throw new Error("No Storage API Key is configured");
   }
-  console.log("Storage api key is configured")
+
   // Query game state to determine whether the user making the request is authorized to mint
   const voucherEarned = true
 
@@ -121,7 +119,7 @@ app.get("/voucher1155", async (req, res) => {
   if (!receiver) {
     throw new Error("Voucher receiver not specified")
   }
-  console.log("receiver is provided")
+
   // Create metadata for the NFT to be minted
   const imageStream = await axios.get('https://picsum.photos/800.jpg', { responseType: 'stream' }).then(res => res.data)
   const imageBuffer = await stream2buffer(imageStream)
@@ -141,7 +139,6 @@ app.get("/voucher1155", async (req, res) => {
   apiClient.setToken(storageApiKey)
   try {
     const uploadResult = await apiClient.uploadNFT(metadata, "blake2b-208")
-    console.log("upload to IPFS successfull")
     const provider = getDefaultProvider(5)
     const wallet = (recoverWalletFromMnemonic(signerMnemonic)).connect(provider)
     const minterContract = GeneralERC1155__factory.connect(minter1155Address, wallet)
@@ -155,7 +152,6 @@ app.get("/voucher1155", async (req, res) => {
       signer: wallet.address,
       receiver
     })
-    console.log("Voucher generated")
     res.send({ ...voucher, uri: uploadResult.cid })
   } catch (error) {
     console.log(error)
