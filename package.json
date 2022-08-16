@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@chainsafe/files-api-client": "1.18.42",
-    "@chainsafe/lazy-minting-voucher-signer": "^1.0.0",
+    "@chainsafe/lazy-minting-voucher-signer": "1.0.2",
     "@chainsafe/marketplace-contracts": "1.0.3",
     "axios": "^0.27.2",
     "cids": "^1.1.9",
